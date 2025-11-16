@@ -41,12 +41,10 @@ class StreamlitUtils:
         df = pd.DataFrame(rows)
         df = df[
             [
-                "relevance_score",
-                "act",
-                "part_or_chapter",
-                "part_or_chapter_heading",
                 "section",
+                "act",
                 "section_heading",
+                "relevance_score",
             ]
         ]
 
