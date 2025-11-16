@@ -1,11 +1,10 @@
 from langchain_core.prompts import ChatPromptTemplate
-from rich import print
 
 
 def get_classification_prompt(reasoning_mode: bool = False) -> ChatPromptTemplate:
     extra = (
         """
-        "reasoning": "<step-by-step explanation>"
+        "reasoning": "<step-by-step explanation in point form>"
         "matched_text": "<relevant extracted text>"
         """
         if reasoning_mode
