@@ -1,7 +1,17 @@
 from langchain_core.prompts import ChatPromptTemplate
+from rich import print
 
 
-def get_classification_prompt() -> ChatPromptTemplate:
+def get_classification_prompt(reasoning_mode: bool = False) -> ChatPromptTemplate:
+    extra = (
+        """
+        "reasoning": "<step-by-step explanation>"
+        "matched_text": "<relevant extracted text>"
+        """
+        if reasoning_mode
+        else ""
+    )
+
     return ChatPromptTemplate.from_template(
         """
         You are a legal reasoning assistant.
@@ -21,6 +31,7 @@ def get_classification_prompt() -> ChatPromptTemplate:
 
         "final_classification": "<citation>"
         "confidence_level" : "<in percentage>"
+        {extra_fields}
         
 
         Citation Rules:
@@ -38,4 +49,4 @@ def get_classification_prompt() -> ChatPromptTemplate:
         - The final output MUST contain ONLY the JSON object.
         - No explanation or reasoning may appear outside the JSON.
         """
-    )
+    ).partial(extra_fields=extra)

@@ -21,6 +21,8 @@ class StreamlitUtils:
         self.llm = get_llm_instance()
 
     def chat(self, query: str):
+        self.llm.refresh_rag_chain(reasoning_mode=st.session_state.reasoning_mode)
+
         with st.spinner(text=Copies.SPINNER.value, show_time=True):
             response = self.llm.rag_chain.invoke(query)
 
@@ -58,6 +60,13 @@ class StreamlitUtils:
 
             st.caption("Confidence Level")
             st.write(f"**{json_response['confidence_level']}**")
+
+            if st.session_state.reasoning_mode:
+                st.caption("Reasoning")
+                st.markdown(json_response["reasoning"])
+
+                st.caption("Matched Text")
+                st.markdown(json_response["matched_text"])
 
             st.caption("Retrieved Documents")
             st.dataframe(df)

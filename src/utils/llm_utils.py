@@ -2,6 +2,7 @@ import re
 from collections import defaultdict
 
 import pymupdf
+import streamlit as st
 from langchain_chroma import Chroma
 from langchain_classic.chains.retrieval_qa.base import RetrievalQA
 from langchain_classic.retrievers.contextual_compression import (
@@ -137,13 +138,20 @@ class LLM_Utils:
             ),
         )
 
-    def create_rag_chain(self):
+    def create_rag_chain(self, reasoning_mode: bool = False):
         self.rag_chain = RetrievalQA.from_chain_type(
             llm=self.llm,
             retriever=self.compressor,
             return_source_documents=True,
-            chain_type_kwargs={"prompt": prompt_templates.get_classification_prompt()},
+            chain_type_kwargs={
+                "prompt": prompt_templates.get_classification_prompt(
+                    reasoning_mode=reasoning_mode
+                )
+            },
         )
+
+    def refresh_rag_chain(self, reasoning_mode: bool = False):
+        self.create_rag_chain(reasoning_mode=reasoning_mode)
 
     def invoke(self, query):
         return self.rag_chain.invoke(query)

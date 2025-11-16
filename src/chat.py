@@ -7,7 +7,18 @@ st.title("R-COP Classifier")
 st.caption("Singapore Statues Online | https://sso.agc.gov.sg//Act/PC1871")
 
 
+if "reasoning_mode" not in st.session_state:
+    st.session_state.reasoning_mode = False
+
+
 def main():
+    with st.sidebar:
+        st.toggle(
+            label="🧠 View Reasoning",
+            value=st.session_state.reasoning_mode,
+            key="reasoning_mode",
+        )
+
     st_util = StreamlitUtils()
 
     form = st.form(key="form")
