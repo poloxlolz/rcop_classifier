@@ -4,8 +4,13 @@ from langchain_core.prompts import ChatPromptTemplate
 def get_classification_prompt(reasoning_mode: bool = False) -> ChatPromptTemplate:
     extra = (
         """
-        "reasoning": "<step-by-step explanation in numbered list and bold key points>"
-        "matched_text": "<relevant extracted text and bold key points>"
+        "reasoning": "<step-by-step explanation in numbered list and bold important points>"
+        "matched_text": "Format as concise, bulleted points for non-legal readers:
+            Prima facie facts of a case: <short fact description>
+            
+            **Key Considerations:**
+            - <observation> (relevant to <citation>)
+            Overall : <one concise sentence as to why the conclusion is as such>
         """
         if reasoning_mode
         else ""
