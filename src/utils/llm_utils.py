@@ -132,7 +132,9 @@ class LLM_Utils:
     def create_cohere_retriever(self):
         self.compressor = ContextualCompressionRetriever(
             base_compressor=CohereRerank(top_n=5, model="rerank-english-v3.0"),
-            base_retriever=self.vectorstore.as_retriever(),
+            base_retriever=self.vectorstore.as_retriever(
+                search_type="similarity", search_kwargs={"k": 5}
+            ),
         )
 
     def create_rag_chain(self):
