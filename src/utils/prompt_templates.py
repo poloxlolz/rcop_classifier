@@ -37,7 +37,8 @@ def get_classification_prompt(reasoning_mode: bool = False) -> ChatPromptTemplat
         Return JSON ONLY in the following form:
 
         "final_classification": "<citation>"
-        "confidence_level" : "<in percentage>"
+        "confidence_level": "<in percentage>"
+        "remarks": "<either Cheating | Hurt | Harassment | Property | General> — <one to two words summarising modus operandi (if any)"
         {extra_fields}
         
 

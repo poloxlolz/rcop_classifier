@@ -54,6 +54,9 @@ class StreamlitUtils:
         st.caption("Confidence Level")
         st.write(f"**{json_response['confidence_level']}**")
 
+        st.caption("Remarks")
+        st.write(f"**{json_response['remarks']}**")
+
         if st.session_state.last_reasoning_mode:
             st.caption("Reasoning")
             st.markdown(json_response["reasoning"])
