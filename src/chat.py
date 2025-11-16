@@ -10,6 +10,9 @@ st.caption("Singapore Statues Online | https://sso.agc.gov.sg//Act/PC1871")
 if "reasoning_mode" not in st.session_state:
     st.session_state.reasoning_mode = False
 
+if "last_response" not in st.session_state:
+    st.session_state.last_response = None
+
 
 def main():
     with st.sidebar:
@@ -25,7 +28,11 @@ def main():
     query = form.text_area("Facts of Case", height=200)
 
     if form.form_submit_button("Submit"):
+        st.session_state.last_reasoning_mode = st.session_state.reasoning_mode
         st_util.chat(query)
+
+    if st.session_state.last_response:
+        st_util.render_response(st.session_state.last_response)
 
 
 if __name__ == "__main__":

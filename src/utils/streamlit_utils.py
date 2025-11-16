@@ -20,53 +20,55 @@ class StreamlitUtils:
     def __init__(self):
         self.llm = get_llm_instance()
 
+    def render_response(self, response: dict):
+        json_response = json.loads(response["result"])
+        citation = json_response["final_classification"]
+
+        match = re.search(pattern=r"s\.([0-9]+[A-Za-z]?)", string=citation)
+
+        cited_section = match.group(1) if match else citation
+
+        rows = []
+        act = ""
+
+        for doc in response["source_documents"]:
+            if match and cited_section == doc.metadata["section"]:
+                act = f" {doc.metadata['act']}"
+
+            row = dict(doc.metadata)
+            rows.append(row)
+
+        df = pd.DataFrame(rows)
+        df = df[
+            [
+                "relevance_score",
+                "act",
+                "part_or_chapter",
+                "part_or_chapter_heading",
+                "section",
+                "section_heading",
+            ]
+        ]
+
+        st.caption("⚖️ Final Classification")
+        st.write(f"**{citation}{act}**")
+
+        st.caption("Confidence Level")
+        st.write(f"**{json_response['confidence_level']}**")
+
+        if st.session_state.last_reasoning_mode:
+            st.caption("Reasoning")
+            st.markdown(json_response["reasoning"])
+
+            st.caption("Matched Text")
+            st.markdown(json_response["matched_text"])
+
+        st.caption("Retrieved Documents")
+        st.dataframe(df)
+
     def chat(self, query: str):
         self.llm.refresh_rag_chain(reasoning_mode=st.session_state.reasoning_mode)
 
         with st.spinner(text=Copies.SPINNER.value, show_time=True):
             response = self.llm.rag_chain.invoke(query)
-
-            json_response = json.loads(response["result"])
-            citation = json_response["final_classification"]
-
-            match = re.search(pattern=r"s\.([0-9]+[A-Za-z]?)", string=citation)
-
-            cited_section = match.group(1) if match else citation
-
-            rows = []
-            act = ""
-
-            for doc in response["source_documents"]:
-                if match and cited_section == doc.metadata["section"]:
-                    act = f" {doc.metadata['act']}"
-
-                row = dict(doc.metadata)
-                rows.append(row)
-
-            df = pd.DataFrame(rows)
-            df = df[
-                [
-                    "relevance_score",
-                    "act",
-                    "part_or_chapter",
-                    "part_or_chapter_heading",
-                    "section",
-                    "section_heading",
-                ]
-            ]
-
-            st.caption("⚖️ Final Classification")
-            st.write(f"**{citation}{act}**")
-
-            st.caption("Confidence Level")
-            st.write(f"**{json_response['confidence_level']}**")
-
-            if st.session_state.reasoning_mode:
-                st.caption("Reasoning")
-                st.markdown(json_response["reasoning"])
-
-                st.caption("Matched Text")
-                st.markdown(json_response["matched_text"])
-
-            st.caption("Retrieved Documents")
-            st.dataframe(df)
+            st.session_state.last_response = response

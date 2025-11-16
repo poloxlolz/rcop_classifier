@@ -2,7 +2,6 @@ import re
 from collections import defaultdict
 
 import pymupdf
-import streamlit as st
 from langchain_chroma import Chroma
 from langchain_classic.chains.retrieval_qa.base import RetrievalQA
 from langchain_classic.retrievers.contextual_compression import (
