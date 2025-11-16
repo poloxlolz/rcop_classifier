@@ -24,7 +24,8 @@ class StreamlitUtils:
         with st.spinner(text=Copies.SPINNER.value, show_time=True):
             response = self.llm.rag_chain.invoke(query)
 
-            citation = json.loads(response["result"])["final_classification"]
+            json_response = json.loads(response["result"])
+            citation = json_response["final_classification"]
 
             match = re.search(pattern=r"s\.([0-9]+[A-Za-z]?)", string=citation)
 
@@ -54,5 +55,9 @@ class StreamlitUtils:
 
             st.caption("⚖️ Final Classification")
             st.write(f"**{citation}{act}**")
+
+            st.caption("Confidence Level")
+            st.write(f"**{json_response['confidence_level']}**")
+
             st.caption("Retrieved Documents")
             st.dataframe(df)

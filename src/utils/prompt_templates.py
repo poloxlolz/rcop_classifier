@@ -20,6 +20,7 @@ def get_classification_prompt() -> ChatPromptTemplate:
         Return JSON ONLY in the following form:
 
         "final_classification": "<citation>"
+        "confidence_level" : "<in percentage>"
         
 
         Citation Rules:
