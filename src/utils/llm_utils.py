@@ -1,7 +1,5 @@
-import json
 import re
 from collections import defaultdict
-from pathlib import Path
 
 import pymupdf
 from langchain_chroma import Chroma
@@ -13,9 +11,9 @@ from langchain_cohere import CohereRerank
 from langchain_core.documents import Document
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
-import src.utils.common_utils as common_utils
-import src.utils.prompt_templates as prompt_templates
-from src.models.documents import DocumentMetadata
+import utils.common_utils as common_utils
+import utils.prompt_templates as prompt_templates
+from models.documents import DocumentMetadata
 
 CORPUS = "Singapore Statues Online"
 CORPUS_DIR = common_utils.get_project_root() / CORPUS

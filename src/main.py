@@ -1,6 +1,6 @@
 import streamlit as st
 
-from src.utils.streamlit_utils import StreamlitUtils
+from utils.streamlit_utils import StreamlitUtils
 
 st.set_page_config(layout="centered", page_title="My Streamlit App")
 st.title("R-COP Classifier")

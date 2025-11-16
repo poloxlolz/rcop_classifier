@@ -5,8 +5,8 @@ import pandas as pd
 import streamlit as st
 from dotenv import load_dotenv
 
-from src.utils.copywriting_utils import Copies
-from src.utils.llm_utils import LLM_Utils
+from utils.copywriting_utils import Copies
+from utils.llm_utils import LLM_Utils
 
 load_dotenv()
 

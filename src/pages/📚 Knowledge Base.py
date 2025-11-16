@@ -1,6 +1,6 @@
 import streamlit as st
 
-from src.utils.streamlit_utils import StreamlitUtils
+from utils.streamlit_utils import StreamlitUtils
 
 st.set_page_config(page_title="SSO Knowledge Base", layout="centered")
 st.title("Bot's SSO Knowledge Base")
