@@ -83,33 +83,42 @@ class LLM_Utils:
         documents = []
 
         for file in CORPUS_DIR.rglob("*.pdf"):
-            act, part_or_chapter_block, *heading_block, _ = file.relative_to(
-                CORPUS_DIR
-            ).parts
+            act, part, *part_hdr_ita, _ = file.relative_to(CORPUS_DIR).parts
 
-            part_or_chapter, part_or_chapter_heading = re.match(
-                pattern=r"^(?:Part|Chapter) (\d+)(?:\s*—\s*|\s+)(.*)$",
-                string=part_or_chapter_block,
-            ).groups()
+            match = re.match(
+                pattern=r"^(?:Part|Chapter) (?P<part_no>\d+)(?:\s*—\s*|\s+)(?P<part_hdr>.*)$",
+                string=part,
+            )
 
-            section, section_heading = file.stem.split(maxsplit=1)
+            prov_no, prov_hdr = file.stem.split(maxsplit=1)
 
             doc_metadata = DocumentMetadata(
                 corpus=CORPUS,
                 act=act,
-                part_or_chapter=part_or_chapter,
-                part_or_chapter_heading=part_or_chapter_heading,
-                heading=heading_block[0] if heading_block else None,
-                section=section,
-                section_heading=section_heading,
+                part_no=match.group("part_no"),
+                part_hdr=match.group("part_hdr"),
+                part_hdr_ita=part_hdr_ita[0] if part_hdr_ita else None,
+                prov_no=prov_no,
+                prov_hdr=prov_hdr,
                 ext=file.suffix,
-                source=str(file),
+                source=CORPUS / file.relative_to(CORPUS_DIR),
             )
 
             with pymupdf.open(filename=file) as doc:
                 text = chr(12).join([page.get_text() for page in doc])
+
+                footer = r"Singapore Statutes Online\nCurrent version as at .*?\nPDF created date on: .*?\n"
+                amendments = r"\[.*?\]|\[.*?\n"
+                page_break = r"\x0c)"
+
+                pattern = f"(?:{footer}|{amendments}|{page_break}"
+
+                cleaned_text: str = re.sub(pattern=pattern, repl="", string=text)
+
                 documents.append(
-                    Document(page_content=text, metadata=doc_metadata.model_dump())
+                    Document(
+                        page_content=cleaned_text, metadata=doc_metadata.model_dump()
+                    )
                 )
 
         return documents
