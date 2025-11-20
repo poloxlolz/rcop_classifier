@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from pydantic import BaseModel
 
 
@@ -12,4 +10,4 @@ class DocumentMetadata(BaseModel):
     provision_no: str
     provision_hdr: str
     ext: str
-    source: Path
+    source: str

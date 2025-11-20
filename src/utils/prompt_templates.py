@@ -38,7 +38,7 @@ def get_classification_prompt(reasoning_mode: bool = False) -> ChatPromptTemplat
 
         "final_classification": "<citation>"
         "confidence_level": "<in percentage>"
-        "remarks": "<either Cheating | Hurt | Harassment | Property | General> — <one to two words summarising modus operandi (if any)"
+        "remarks": "<either Cheating | Hurt | Harassment | Property | General> — <up to 5 words summarising modus operandi (if any)"
         {extra_fields}
         
 

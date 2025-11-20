@@ -32,7 +32,7 @@ class StreamlitUtils:
         act = ""
 
         for doc in response["source_documents"]:
-            if match and cited_section == doc.metadata["section"]:
+            if match and cited_section == doc.metadata["provision_no"]:
                 act = f" {doc.metadata['act']}"
 
             row = dict(doc.metadata)
