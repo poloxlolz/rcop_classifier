@@ -38,45 +38,45 @@ class LLM_Utils:
         self.create_cohere_retriever()
         self.create_rag_chain()
 
-    @staticmethod
-    def build_corpus_json():
-        hierarchy = defaultdict(
-            lambda: defaultdict(list)
-        )  # Chapter/Part → list or Heading → list
+    # @staticmethod
+    # def build_corpus_json():
+    #     hierarchy = defaultdict(
+    #         lambda: defaultdict(list)
+    #     )  # Chapter/Part → list or Heading → list
 
-        for file in CORPUS_DIR.rglob("*.pdf"):
-            parts = file.relative_to(CORPUS_DIR).parts
+    #     for file in CORPUS_DIR.rglob("*.pdf"):
+    #         parts = file.relative_to(CORPUS_DIR).parts
 
-            act = parts[0]
-            part_or_chapter = parts[1] if len(parts) > 1 else None
-            section_name = file.stem
+    #         act = parts[0]
+    #         part_or_chapter = parts[1] if len(parts) > 1 else None
+    #         section_name = file.stem
 
-            # Only treat as heading if there are more than 3 parts
-            if len(parts) > 3:
-                heading = parts[2]
-                if part_or_chapter not in hierarchy[act]:
-                    hierarchy[act][part_or_chapter] = defaultdict(list)
-                hierarchy[act][part_or_chapter][heading].append(
-                    {"section": section_name, "file": str(file)}
-                )
-            else:
-                # No heading → append directly to list
-                if part_or_chapter not in hierarchy[act]:
-                    hierarchy[act][part_or_chapter] = []
-                hierarchy[act][part_or_chapter].append(
-                    {"section": section_name, "file": str(file)}
-                )
+    #         # Only treat as heading if there are more than 3 parts
+    #         if len(parts) > 3:
+    #             heading = parts[2]
+    #             if part_or_chapter not in hierarchy[act]:
+    #                 hierarchy[act][part_or_chapter] = defaultdict(list)
+    #             hierarchy[act][part_or_chapter][heading].append(
+    #                 {"section": section_name, "file": str(file)}
+    #             )
+    #         else:
+    #             # No heading → append directly to list
+    #             if part_or_chapter not in hierarchy[act]:
+    #                 hierarchy[act][part_or_chapter] = []
+    #             hierarchy[act][part_or_chapter].append(
+    #                 {"section": section_name, "file": str(file)}
+    #             )
 
-        # Convert defaultdicts to normal dicts for JSON
-        def convert(d):
-            if isinstance(d, defaultdict):
-                return {k: convert(v) for k, v in d.items()}
-            elif isinstance(d, list):
-                return list(d)
-            else:
-                return d
+    #     # Convert defaultdicts to normal dicts for JSON
+    #     def convert(d):
+    #         if isinstance(d, defaultdict):
+    #             return {k: convert(v) for k, v in d.items()}
+    #         elif isinstance(d, list):
+    #             return list(d)
+    #         else:
+    #             return d
 
-        return convert(hierarchy)
+    #     return convert(hierarchy)
 
     def create_documents(self) -> list[Document]:
         # TO-DO : Parse out document headers

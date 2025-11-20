@@ -41,9 +41,9 @@ class StreamlitUtils:
         df = pd.DataFrame(rows)
         df = df[
             [
-                "section",
+                "provision_no",
                 "act",
-                "section_heading",
+                "provison_hdr",
                 "relevance_score",
             ]
         ]
