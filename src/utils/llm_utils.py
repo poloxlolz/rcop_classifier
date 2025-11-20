@@ -90,7 +90,7 @@ class LLM_Utils:
                 string=part,
             )
 
-            prov_no, prov_hdr = file.stem.split(maxsplit=1)
+            provision_no, provision_hdr = file.stem.split(maxsplit=1)
 
             doc_metadata = DocumentMetadata(
                 corpus=CORPUS,
@@ -98,8 +98,8 @@ class LLM_Utils:
                 part_no=match.group("part_no"),
                 part_hdr=match.group("part_hdr"),
                 part_hdr_ita=part_hdr_ita[0] if part_hdr_ita else None,
-                prov_no=prov_no,
-                prov_hdr=prov_hdr,
+                prov_no=provision_no,
+                prov_hdr=provision_hdr,
                 ext=file.suffix,
                 source=CORPUS / file.relative_to(CORPUS_DIR),
             )

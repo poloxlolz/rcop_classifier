@@ -9,7 +9,7 @@ class DocumentMetadata(BaseModel):
     part_no: str
     part_hdr: str
     part_hdr_ita: str | None = None
-    prov_no: str
-    prov_hdr: str
+    provision_no: str
+    provision_hdr: str
     ext: str
     source: Path

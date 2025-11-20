@@ -43,7 +43,7 @@ class StreamlitUtils:
             [
                 "provision_no",
                 "act",
-                "provison_hdr",
+                "provision_hdr",
                 "relevance_score",
             ]
         ]
